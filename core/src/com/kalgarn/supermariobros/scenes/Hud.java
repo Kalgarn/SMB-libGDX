@@ -76,9 +76,29 @@ public class Hud implements Disposable{
         stage.addActor(table);
     }
 
+    public void update(float dt){
+        timeCount += dt;
+        if(timeCount >= 1){
+            if (worldTimer > 0) {
+                worldTimer--;
+            } else {
+                timeUp = true;
+            }
+            countdownLabel.setText(String.format("%03d", worldTimer));
+            timeCount = 0;
+        }
+    }
+
+    public static void addScore(int value){
+        score += value;
+        scoreLabel.setText(String.format("%06d", score));
+    }
+
 
         @Override
     public void dispose() {
-
+        stage.dispose();
     }
+
+    public boolean isTimeUp() { return timeUp; }
 }
