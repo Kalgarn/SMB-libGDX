@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.width = 1200;
 		config.height = 624;
 		config.title = "Super Mario Bros";
-		config.resizable = false;
+		//config.resizable = false;
 		//config.fullscreen = true;
 		new LwjglApplication(new SuperMarioBros(), config);
 	}

@@ -137,6 +137,7 @@ public class Mario extends Sprite {
         }
 
         if (b2body.getPosition().y < -1){
+            currentState = State.DEAD;
             die();
         }
 

@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kalgarn.supermariobros.Assets;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.enemies.Enemy;
 import com.kalgarn.supermariobros.items.Item;
