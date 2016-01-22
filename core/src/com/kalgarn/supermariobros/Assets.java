@@ -10,10 +10,17 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public class Assets implements Disposable{
 
+    public static Assets instance = null;
+
     private AssetManager manager;
 
     public Assets() {
-        manager = new AssetManager();
+        if (instance == null) {
+            instance = this;
+        }
+        if (manager == null){
+            manager = new AssetManager();
+        }
         loadAssets();
     }
 
@@ -33,6 +40,6 @@ public class Assets implements Disposable{
 
     @Override
     public void dispose() {
-
+        manager.dispose();
     }
 }

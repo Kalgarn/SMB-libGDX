@@ -28,7 +28,7 @@ public class GameOverScreen implements Screen {
         viewport = new FitViewport(SuperMarioBros.V_WIDTH, SuperMarioBros.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((SuperMarioBros) game).batch);
 
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/smb_font.fnt")), Color.WHITE);
 
         Table table = new Table();
         table.center();
