@@ -15,8 +15,8 @@ import com.kalgarn.supermariobros.enemies.Enemy;
 import com.kalgarn.supermariobros.enemies.Goomba;
 import com.kalgarn.supermariobros.enemies.Turtle;
 import com.kalgarn.supermariobros.screens.PlayScreen;
-import com.kalgarn.supermariobros.sprites.tileObjects.Brick;
-import com.kalgarn.supermariobros.sprites.tileObjects.Coin;
+import com.kalgarn.supermariobros.sprites.mapTileObjects.Brick;
+import com.kalgarn.supermariobros.sprites.mapTileObjects.Coin;
 
 /**
  * Created by Jerome on 13/01/2016.
@@ -80,11 +80,14 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             goombas.add(new Goomba(screen, rect.getX() / SuperMarioBros.PPM, rect.getY() / SuperMarioBros.PPM));
         }
+        //create koopas
         turtles = new Array<Turtle>();
         for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             turtles.add(new Turtle(screen, rect.getX() / SuperMarioBros.PPM, rect.getY() / SuperMarioBros.PPM));
         }
+
+
     }
 
     public Array<Goomba> getGoombas() {

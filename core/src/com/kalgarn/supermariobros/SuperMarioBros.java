@@ -14,10 +14,14 @@ import com.kalgarn.supermariobros.screens.PlayScreen;
 
 public class SuperMarioBros extends Game {
 
-	//Virtual Screen size and Box2D Scale(Pixels Per Meter)
-	public static final int V_WIDTH = 400;
-	public static final int V_HEIGHT = 208;
-	public static final float PPM = 90; // pixel per meter
+	//Virtual Screen size and Box2D Scale
+	public static final int WINDOW_WIDTH = 400;
+	public static final int WINDOW_HEIGHT = 208;
+
+	public static final float VIEWPORT_WIDTH = 400;
+	public static final float VIEWPORT_HEIGHT = 208;
+
+	public static final float PPM = 100; // pixel per meter
 
 	//Box2D Collision Bits
 	public static final short NOTHING_BIT = 0;
@@ -51,6 +55,7 @@ We will use it in the static context to save time for now. */
 
 	public void loadAudio(){
         manager.load("audio/music/mario_music.ogg", Music.class);
+        manager.load("audio/music/game_over.ogg", Music.class);
         manager.load("audio/sounds/coin.wav", Sound.class);
         manager.load("audio/sounds/bump.wav", Sound.class);
         manager.load("audio/sounds/breakblock.wav", Sound.class);
@@ -59,6 +64,7 @@ We will use it in the static context to save time for now. */
         manager.load("audio/sounds/powerdown.wav", Sound.class);
         manager.load("audio/sounds/stomp.wav", Sound.class);
         manager.load("audio/sounds/mariodie.wav", Sound.class);
+        manager.load("audio/sounds/jump_small.wav", Sound.class);
 
         manager.finishLoading();
 	}

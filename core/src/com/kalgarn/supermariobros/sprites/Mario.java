@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -28,6 +29,8 @@ import com.kalgarn.supermariobros.screens.PlayScreen;
  * Created by Jerome on 13/01/2016.
  */
 public class Mario extends Sprite {
+
+
     public enum State {FALLING, JUMPING, STANDING, RUNNING, GROWING, DEAD};
     public State currentState;
     public State previousState;
@@ -185,6 +188,7 @@ public class Mario extends Sprite {
             runningRight = true;
         }
 
+
         //if the current state is the same as the previous state increase the state timer.
         //otherwise the state has changed and we need to reset timer.
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
@@ -258,6 +262,7 @@ public class Mario extends Sprite {
     public void jump() {
         if (currentState != State.JUMPING) {
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            SuperMarioBros.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
             currentState = State.JUMPING;
         }
     }
@@ -379,6 +384,12 @@ public class Mario extends Sprite {
         fdef.isSensor = true;
 
         //b2body.createFixture(fdef).setUserData("head"); // contact listener
+        b2body.createFixture(fdef).setUserData(this);
+
+        // senssor Mario's feet
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-2 / SuperMarioBros.PPM, SuperMarioBros.PPM), new Vector2(2 / SuperMarioBros.PPM, SuperMarioBros.PPM));
+        fdef.shape = feet;
         b2body.createFixture(fdef).setUserData(this);
     }
 

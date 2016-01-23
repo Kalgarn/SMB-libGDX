@@ -65,12 +65,12 @@ public class Turtle extends Enemy{
 
         //Create the Head here:
         PolygonShape head = new PolygonShape();
-        Vector2[] vertice = new Vector2[4];
-        vertice[0] = new Vector2(-5, 8).scl(1 / SuperMarioBros.PPM);
-        vertice[1] = new Vector2(5, 8).scl(1 / SuperMarioBros.PPM);
-        vertice[2] = new Vector2(-3, 3).scl(1 / SuperMarioBros.PPM);
-        vertice[3] = new Vector2(3, 3).scl(1 / SuperMarioBros.PPM);
-        head.set(vertice);
+        Vector2[] vertex = new Vector2[4];
+        vertex[0] = new Vector2(-5, 8).scl(1 / SuperMarioBros.PPM);
+        vertex[1] = new Vector2(5, 8).scl(1 / SuperMarioBros.PPM);
+        vertex[2] = new Vector2(-3, 3).scl(1 / SuperMarioBros.PPM);
+        vertex[3] = new Vector2(3, 3).scl(1 / SuperMarioBros.PPM);
+        head.set(vertex);
 
         fdef.shape = head;
         fdef.restitution = 1.8f;
@@ -91,11 +91,11 @@ public class Turtle extends Enemy{
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
         }
-
-        if(velocity.x > 0 && region.isFlipX() == false){
+        //region.isFlipX() == false
+        if(velocity.x > 0 && !region.isFlipX()){
             region.flip(true, false);
         }
-        if(velocity.x < 0 && region.isFlipX() == true){
+        if(velocity.x < 0 && region.isFlipX()){
             region.flip(true, false);
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;

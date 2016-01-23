@@ -3,6 +3,7 @@ package com.kalgarn.supermariobros.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,10 +23,11 @@ public class GameOverScreen implements Screen {
     private Stage stage;
 
     private Game game;
+    private Music music;
 
     public GameOverScreen(Game game){
         this.game = game;
-        viewport = new FitViewport(SuperMarioBros.V_WIDTH, SuperMarioBros.V_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(SuperMarioBros.WINDOW_WIDTH, SuperMarioBros.WINDOW_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((SuperMarioBros) game).batch);
 
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/smb_font.fnt")), Color.WHITE);
@@ -42,6 +44,10 @@ public class GameOverScreen implements Screen {
         table.add(playAgainLabel).expandX().padTop(10f);
 
         stage.addActor(table);
+
+        music = SuperMarioBros.manager.get("audio/music/game_over.ogg", Music.class);
+        music.setVolume(0.3f);
+        music.play();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.kalgarn.supermariobros.sprites.tileObjects;
+package com.kalgarn.supermariobros.sprites.mapTileObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

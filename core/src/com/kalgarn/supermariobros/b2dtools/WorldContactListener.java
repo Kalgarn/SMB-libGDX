@@ -11,7 +11,7 @@ import com.kalgarn.supermariobros.enemies.Enemy;
 import com.kalgarn.supermariobros.items.Item;
 import com.kalgarn.supermariobros.others.FireBall;
 import com.kalgarn.supermariobros.sprites.Mario;
-import com.kalgarn.supermariobros.sprites.tileObjects.InteractiveTileObject;
+import com.kalgarn.supermariobros.sprites.mapTileObjects.InteractiveTileObject;
 
 /**
  * Created by Jerome on 13/01/2016.

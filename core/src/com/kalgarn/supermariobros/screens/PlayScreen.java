@@ -9,15 +9,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.kalgarn.supermariobros.Assets;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.enemies.Enemy;
 import com.kalgarn.supermariobros.items.Item;
@@ -41,7 +42,7 @@ public class PlayScreen implements Screen {
 
     //basic playscreen variables
     private OrthographicCamera cam;
-    private Viewport gamePort;
+    private Viewport gameViewport;
     private Hud hud;
 
     //Tiled map variables
@@ -64,14 +65,17 @@ public class PlayScreen implements Screen {
 
     Texture texture;
 
+    private float mapWidth;
+
     public PlayScreen(SuperMarioBros game){
         this.smbGame = game;
 
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
         cam = new OrthographicCamera(); //create cam used to follow mario through cam world
         //create a FitViewport to maintain virtual aspect ratio despite screen size
-        //gamePort = new FitViewport(800, 480, cam); // ScreenViewPort
-        gamePort = new FitViewport(SuperMarioBros.V_WIDTH / SuperMarioBros.PPM, SuperMarioBros.V_HEIGHT / SuperMarioBros.PPM, cam);
+        // = new FitViewport(800, 480, cam); // ScreenViewPort
+        gameViewport = new FitViewport(SuperMarioBros.VIEWPORT_WIDTH / SuperMarioBros.PPM, SuperMarioBros.VIEWPORT_HEIGHT / SuperMarioBros.PPM);
+        gameViewport.setCamera(cam);
         //texture = new Texture("badlogic.jpg");
 
         hud = new Hud(game.batch); //create our game HUD for scores/timers/level info
@@ -82,7 +86,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1  / SuperMarioBros.PPM);
 
         //initially set our gamcam to be centered correctly at the start of the map
-        cam.position.set(gamePort.getWorldWidth() /2, gamePort.getWorldHeight() / 2, 0);
+        cam.position.set((SuperMarioBros.VIEWPORT_WIDTH /2) /SuperMarioBros.PPM, (SuperMarioBros.VIEWPORT_HEIGHT / 2) / SuperMarioBros.PPM, 0);
 
         //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
         world = new World(new Vector2(0, -10), true);
@@ -103,6 +107,8 @@ public class PlayScreen implements Screen {
 
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
+
+        mapWidth = ((TiledMapTileLayer) map.getLayers().get(0)).getWidth();
     }
 
     public void spawnItem(ItemDef idef){
@@ -150,7 +156,7 @@ public class PlayScreen implements Screen {
 
         //takes 1 step in the physics simulation(60 times per second)
         world.step(1 / 60f, 6, 2);
-
+        //update ennemy
         player.update(dt);
         for(Enemy enemy : creator.getEnemies()) {
             enemy.update(dt);
@@ -158,21 +164,33 @@ public class PlayScreen implements Screen {
                 enemy.b2body.setActive(true);
             }
         }
-
+        // update item
         for(Item item : items)
             item.update(dt);
 
         hud.update(dt);
 
         //attach our gamecam to our players.x coordinate
+        float posX = cam.position.x;
         if(player.currentState != Mario.State.DEAD) {
             cam.position.x = player.b2body.getPosition().x;
+          //  posX = MathUtils.clamp(player.b2body.getPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, (mapWidth - SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
+
+        }
+        cam.position.x = MathUtils.lerp(cam.position.x, posX, 0.1f);
+        if (Math.abs(cam.position.x - posX) < 0.1f) {
+            cam.position.x = posX;
         }
 
+        //
+//        if ((cam.position.x - (SuperMarioBros.V_WIDTH /2) <= 0)){
+//            cam.position.x = (SuperMarioBros.V_WIDTH /2) / SuperMarioBros.PPM;
+//        }
         //update our gamecam with correct coordinates after changes
         cam.update();
         //tell our renderer to draw only what our camera can see in our game world.
         renderer.setView(cam);
+
 
     }
 
@@ -221,7 +239,7 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         //updated our game viewport
-        gamePort.update(width, height);
+        gameViewport.update(width, height);
     }
 
     public TiledMap getMap(){
@@ -258,4 +276,7 @@ public class PlayScreen implements Screen {
 
     public Hud getHud(){ return hud; }
 
+    public float getMapWidth() {
+        return mapWidth;
+    }
 }
