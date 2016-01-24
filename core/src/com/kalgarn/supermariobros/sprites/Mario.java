@@ -395,6 +395,7 @@ public class Mario extends Sprite {
 
     public void fire() {
         fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+        SuperMarioBros.manager.get("audio/sounds/fireball.ogg", Sound.class).play();
     }
 
     public void draw(Batch batch) {
