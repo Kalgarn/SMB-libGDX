@@ -1,5 +1,6 @@
 package com.kalgarn.supermariobros.enemies;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +16,7 @@ import com.kalgarn.supermariobros.sprites.Mario;
 /**
  * Created by Jerome on 14/01/2016.
  */
-public class Turtle extends Enemy{
+public class Koopa extends Enemy{
     public static final int KICK_LEFT = -2;
     public static final int KICK_RIGHT = 2;
     public enum State {WALKING, MOVING_SHELL, STANDING_SHELL}
@@ -29,7 +30,7 @@ public class Turtle extends Enemy{
     private boolean destroyed;
 
 
-    public Turtle(PlayScreen screen, float x, float y) {
+    public Koopa(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
         frames.add(new TextureRegion(screen.getAtlas().findRegion("turtle"), 0, 0, 16, 24));
@@ -58,7 +59,7 @@ public class Turtle extends Enemy{
                 SuperMarioBros.BRICK_BIT |
                 SuperMarioBros.ENEMY_BIT |
                 SuperMarioBros.OBJECT_BIT |
-                SuperMarioBros.MARIO_BIT;
+                SuperMarioBros.MARIO_BIT | SuperMarioBros.FIREBALL_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -66,10 +67,10 @@ public class Turtle extends Enemy{
         //Create the Head here:
         PolygonShape head = new PolygonShape();
         Vector2[] vertex = new Vector2[4];
-        vertex[0] = new Vector2(-5, 8).scl(1 / SuperMarioBros.PPM);
-        vertex[1] = new Vector2(5, 8).scl(1 / SuperMarioBros.PPM);
-        vertex[2] = new Vector2(-3, 3).scl(1 / SuperMarioBros.PPM);
-        vertex[3] = new Vector2(3, 3).scl(1 / SuperMarioBros.PPM);
+        vertex[0] = new Vector2(-5f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertex[1] = new Vector2(2f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertex[2] = new Vector2(-2f, 2f).scl(1 / SuperMarioBros.PPM);
+        vertex[3] = new Vector2(2f, 2f).scl(1 / SuperMarioBros.PPM);
         head.set(vertex);
 
         fdef.shape = head;
@@ -140,6 +141,7 @@ public class Turtle extends Enemy{
     }
 
     public void kick(int direction){
+        SuperMarioBros.manager.get("audio/sounds/kick.ogg", Sound.class).play();
         velocity.x = direction;
         currentState = State.MOVING_SHELL;
     }

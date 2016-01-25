@@ -173,7 +173,7 @@ public class PlayScreen implements Screen {
         //attach our gamecam to our players.x coordinate
         float posX = cam.position.x;
         if(player.currentState != Mario.State.DEAD) {
-            //cam.position.x = player.b2body.getPosition().x;
+            cam.position.x = player.b2body.getPosition().x;
           posX = MathUtils.clamp(player.b2body.getPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, (mapWidth - SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
 
         }

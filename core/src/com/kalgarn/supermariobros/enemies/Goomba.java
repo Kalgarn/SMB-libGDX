@@ -70,7 +70,7 @@ public class Goomba extends Enemy {
                 SuperMarioBros.BRICK_BIT |
                 SuperMarioBros.ENEMY_BIT |
                 SuperMarioBros.OBJECT_BIT |
-                SuperMarioBros.MARIO_BIT;
+                SuperMarioBros.MARIO_BIT ;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -78,10 +78,10 @@ public class Goomba extends Enemy {
         //Create the Head here:
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4]; // vertex is singular form
-        vertice[0] = new Vector2(-5, 8).scl(1 / SuperMarioBros.PPM);
-        vertice[1] = new Vector2(5, 8).scl(1 / SuperMarioBros.PPM);
-        vertice[2] = new Vector2(-3, 3).scl(1 / SuperMarioBros.PPM);
-        vertice[3] = new Vector2(3, 3).scl(1 / SuperMarioBros.PPM);
+        vertice[0] = new Vector2(-5f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertice[1] = new Vector2(5f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertice[2] = new Vector2(-2f, -2f).scl(1 / SuperMarioBros.PPM);
+        vertice[3] = new Vector2(2f, 2f).scl(1 / SuperMarioBros.PPM);
         head.set(vertice);
 
         fdef.shape = head;
@@ -106,7 +106,7 @@ public class Goomba extends Enemy {
 
     @Override
     public void hitByEnemy(Enemy enemy) {
-        if(enemy instanceof Turtle && ((Turtle) enemy).currentState == Turtle.State.MOVING_SHELL)
+        if(enemy instanceof Koopa && ((Koopa) enemy).currentState == Koopa.State.MOVING_SHELL)
             setToDestroy = true;
         else
             reverseVelocity(true, false);

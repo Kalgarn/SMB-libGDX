@@ -36,8 +36,6 @@ public class Hud implements Disposable{
     private Label worldLabel;
     private Label marioLabel;
 
-    private BitmapFont font;
-
     public Hud(SpriteBatch sb) {
         //define our tracking variables
         worldTimer = 300;
@@ -58,13 +56,14 @@ public class Hud implements Disposable{
         table.setFillParent(true);
 
         //define our labels using the String, and a Label style consisting of a font and color
-        font = new BitmapFont(Gdx.files.internal("fonts/smb_font.fnt"));
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(font, Color.WHITE));
-        scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(font, Color.WHITE));
-        timeLabel = new Label("TIME", new Label.LabelStyle(font, Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(font, Color.WHITE));
-        worldLabel = new Label("WORLD", new Label.LabelStyle(font, Color.WHITE));
-        marioLabel = new Label("MARIO", new Label.LabelStyle(font, Color.WHITE));
+        Label.LabelStyle fontStyle = new Label.LabelStyle(new BitmapFont(Gdx.files.internal("fonts/smb_font.fnt")), Color.WHITE);
+
+        countdownLabel = new Label(String.format("%03d", worldTimer), fontStyle);
+        scoreLabel = new Label(String.format("%06d", score), fontStyle);
+        timeLabel = new Label("TIME", fontStyle);
+        levelLabel = new Label("1-1", fontStyle);
+        worldLabel = new Label("WORLD", fontStyle);
+        marioLabel = new Label("MARIO", fontStyle);
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(marioLabel).expandX().padTop(10);

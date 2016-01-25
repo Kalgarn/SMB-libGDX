@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.enemies.Enemy;
-import com.kalgarn.supermariobros.enemies.Turtle;
+import com.kalgarn.supermariobros.enemies.Koopa;
 import com.kalgarn.supermariobros.others.FireBall;
 import com.kalgarn.supermariobros.screens.PlayScreen;
 
@@ -268,8 +267,8 @@ public class Mario extends Sprite {
     }
 
     public void hit(Enemy enemy) {
-        if (enemy instanceof Turtle && ((Turtle) enemy).currentState == Turtle.State.STANDING_SHELL)
-            ((Turtle) enemy).kick(enemy.b2body.getPosition().x > b2body.getPosition().x ? Turtle.KICK_RIGHT : Turtle.KICK_LEFT);
+        if (enemy instanceof Koopa && ((Koopa) enemy).currentState == Koopa.State.STANDING_SHELL)
+            ((Koopa) enemy).kick(enemy.b2body.getPosition().x > b2body.getPosition().x ? Koopa.KICK_RIGHT : Koopa.KICK_LEFT);
         else {
             if (marioIsBig) {
                 marioIsBig = false;

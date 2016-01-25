@@ -65,6 +65,9 @@ We will use it in the static context to save time for now. */
         manager.load("audio/sounds/stomp.wav", Sound.class);
         manager.load("audio/sounds/mariodie.wav", Sound.class);
         manager.load("audio/sounds/jump_small.wav", Sound.class);
+		manager.load("audio/sounds/jump_super.wav", Sound.class);
+		manager.load("audio/sounds/fireball.ogg", Sound.class);
+        manager.load("audio/sounds/kick.ogg", Sound.class);
 
         manager.finishLoading();
 	}
