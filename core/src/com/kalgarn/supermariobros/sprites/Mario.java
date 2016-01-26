@@ -1,5 +1,7 @@
 package com.kalgarn.supermariobros.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -27,15 +29,14 @@ import com.kalgarn.supermariobros.screens.PlayScreen;
 /**
  * Created by Jerome on 13/01/2016.
  */
-public class Mario extends Sprite {
+public class Mario extends RigidBody {
 
 
     public enum State {FALLING, JUMPING, STANDING, RUNNING, GROWING, DEAD};
     public State currentState;
     public State previousState;
 
-    public World world;
-    public Body b2body;
+
 
     private TextureRegion marioStand;
     private Animation marioRun;
@@ -57,10 +58,13 @@ public class Mario extends Sprite {
 
     private Array<FireBall> fireballs;
 
-    public Mario(PlayScreen screen) {
+    private final float radius = 6.8f / SuperMarioBros.PPM;
+
+    public Mario(PlayScreen screen, float x, float y) {
+        super(screen,x,y);
         //initialize default values
-        this.screen = screen;
-        this.world = screen.getWorld();
+       // this.screen = screen;
+       // this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -101,24 +105,39 @@ public class Mario extends Sprite {
         marioDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
 
         //define mario in Box2d
-        defineMario();
+            //defineMario();
+      //  defineBody();
 
         //set initial values for marios location, width and height. And initial frame as marioStand.
-        setBounds(0, 0, 16 / SuperMarioBros.PPM, 16 / SuperMarioBros.PPM);
+        setBounds(getX(), getY(), 16 / SuperMarioBros.PPM, 16 / SuperMarioBros.PPM);
         setRegion(marioStand);
 
         fireballs = new Array<FireBall>();
     }
 
-    public void update(float dt) {
+    private void handleInput(){
+        //control our player using immediate impulses
 
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                jump();
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && b2body.getLinearVelocity().x <= 2)
+                b2body.applyLinearImpulse(new Vector2(0.5f, 0), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= -2)
+                b2body.applyLinearImpulse(new Vector2(-0.5f, 0), b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+               fire();
+
+        }
+
+    public void update(float dt) {
+handleInput();
         // time is up : too late mario dies T_T
         // the !isDead() method is used to prevent multiple invocation
         // of "die music" and jumping
         // there is probably better ways to do that but it works for now.
-        if (screen.getHud().isTimeUp() && !isDead()) {
-            die();
-        }
+//        if (screen.getHud().isTimeUp() && !isDead()) {
+//            die();
+//        }
 
         //update our sprite to correspond with the position of our Box2D body
         if (marioIsBig)
@@ -176,13 +195,13 @@ public class Mario extends Sprite {
         }
 
         //if mario is running left and the texture isnt facing left... flip it.
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
+        if (((b2body.getLinearVelocity().x < 0) || !runningRight) && !region.isFlipX()) {
             region.flip(true, false);
             runningRight = false;
         }
 
         //if mario is running right and the texture isnt facing right... flip it.
-        else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
+        else if (((b2body.getLinearVelocity().x > 0) || runningRight) && region.isFlipX()) {
             region.flip(true, false);
             runningRight = true;
         }
@@ -353,10 +372,10 @@ public class Mario extends Sprite {
         timeToDefineBigMario = false;
     }
 
-    // define mario first spawn
-    public void defineMario() {
+    // define mario first spawn // defineMario()
+    protected void defineBody() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / SuperMarioBros.PPM, 32 / SuperMarioBros.PPM);
+        bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -393,7 +412,7 @@ public class Mario extends Sprite {
     }
 
     public void fire() {
-        fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+        fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight));
         SuperMarioBros.manager.get("audio/sounds/fireball.ogg", Sound.class).play();
     }
 

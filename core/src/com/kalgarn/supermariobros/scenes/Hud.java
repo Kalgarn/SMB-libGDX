@@ -45,7 +45,7 @@ public class Hud implements Disposable{
 
         //setup the HUD viewport using a new camera seperate from our gamecam
         //define our stage using that viewport and our games spritebatch
-        viewport = new FitViewport(SuperMarioBros.WINDOW_WIDTH, SuperMarioBros.WINDOW_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(SuperMarioBros.WINDOW_WIDTH / 0.5f, SuperMarioBros.WINDOW_HEIGHT / 0.5f, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         //define a table used to organize our hud's labels

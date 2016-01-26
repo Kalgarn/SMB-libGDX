@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.kalgarn.supermariobros.screens.PlayScreen;
 
 public class SuperMarioBros extends Game {
@@ -18,10 +19,14 @@ public class SuperMarioBros extends Game {
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 208;
 
-	public static final float VIEWPORT_WIDTH = 400;
-	public static final float VIEWPORT_HEIGHT = 208;
+	public static final float VIEWPORT_WIDTH = 400f;
+	public static final float VIEWPORT_HEIGHT = 208f;
+	// pixel per meter
+	public static final float PPM = 16;
 
-	public static final float PPM = 100; // pixel per meter
+	public static final Vector2 GRAVITY = new Vector2(0.0f, -9.8f * 4);
+
+	public static final float STEP = 1 / 60.0f;
 
 	//Box2D Collision Bits
 	public static final short NOTHING_BIT = 0;

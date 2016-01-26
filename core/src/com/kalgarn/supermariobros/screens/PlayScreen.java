@@ -28,6 +28,7 @@ import com.kalgarn.supermariobros.scenes.Hud;
 import com.kalgarn.supermariobros.sprites.Mario;
 import com.kalgarn.supermariobros.b2dtools.B2WorldCreator;
 import com.kalgarn.supermariobros.b2dtools.WorldContactListener;
+import com.kalgarn.supermariobros.sprites.mapTileObjects.InteractiveTileObject;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -51,7 +52,7 @@ public class PlayScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
 
     //Box2d variables
-    private World world;
+    public World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
@@ -62,10 +63,13 @@ public class PlayScreen implements Screen {
 
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
+    private Array<InteractiveTileObject> mapTilesObjects;
+    private Array<Enemy> enemies;
 
     Texture texture;
 
     private float mapWidth;
+
 
     public PlayScreen(SuperMarioBros game){
         this.smbGame = game;
@@ -82,21 +86,22 @@ public class PlayScreen implements Screen {
 
         //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
-        map = maploader.load("level1.tmx");
+        map = maploader.load("level_1-1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1  / SuperMarioBros.PPM);
 
         //initially set our gamcam to be centered correctly at the start of the map
         cam.position.set((SuperMarioBros.VIEWPORT_WIDTH /2) /SuperMarioBros.PPM, (SuperMarioBros.VIEWPORT_HEIGHT / 2) / SuperMarioBros.PPM, 0);
 
         //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
-        world = new World(new Vector2(0, -10), true);
+        world = new World(SuperMarioBros.GRAVITY, true);
         //allows for debug lines of our box2d world.
         b2dr = new Box2DDebugRenderer();
 
-        creator = new B2WorldCreator(this);
-
+        creator = new B2WorldCreator(this, map);
+    mapTilesObjects = creator.getMapTileObjects();
+        enemies = creator.getEnemies();
         //create mario in our game world
-        player = new Mario(this);
+        player = new Mario(this,(creator.getStartPosition().x + 8) / SuperMarioBros.PPM, (creator.getStartPosition().y + 8) / SuperMarioBros.PPM);
 
         world.setContactListener(new WorldContactListener());
 
@@ -135,18 +140,23 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt){
         //control our player using immediate impulses
-        if(player.currentState != Mario.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                player.jump();
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-                player.fire();
-
+//        if(player.currentState != Mario.State.DEAD) {
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+//                player.jump();
+//            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+//                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+//            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+//                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+//                player.fire();
+//
+//        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_6)){
+            cam.position.x = cam.position.x + 5f / SuperMarioBros.PPM;
         }
-
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_4)){
+            cam.position.x = cam.position.x - 5f / SuperMarioBros.PPM;
+        }
     }
 
     public void update(float dt){
@@ -160,27 +170,37 @@ public class PlayScreen implements Screen {
         player.update(dt);
         for(Enemy enemy : creator.getEnemies()) {
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
-                enemy.b2body.setActive(true);
-            }
+//            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
+//                enemy.b2body.setActive(true);
+//            }
         }
         // update item
         for(Item item : items)
             item.update(dt);
 
+        // update map tile objects
+        for (InteractiveTileObject mapTileObject : mapTilesObjects) {
+            mapTileObject.update(dt);
+        }
+
+//        // update enemies
+//        for (Enemy enemy : enemies) {
+//            enemy.update(delta);
+//        }
+
         hud.update(dt);
 
         //attach our gamecam to our players.x coordinate
-        float posX = cam.position.x;
-        if(player.currentState != Mario.State.DEAD) {
-            cam.position.x = player.b2body.getPosition().x;
-          posX = MathUtils.clamp(player.b2body.getPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, (mapWidth - SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
-
-        }
-        cam.position.x = MathUtils.lerp(cam.position.x, posX, 0.1f);
-        if (Math.abs(cam.position.x - posX) < 0.1f) {
-            cam.position.x = posX;
-        }
+//        float posX = cam.position.x;
+//        if(player.currentState != Mario.State.DEAD) {
+//            cam.position.x = player.b2body.getPosition().x;
+//          posX = MathUtils.clamp(player.b2body.getPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, (mapWidth - SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
+//
+//        }
+//        cam.position.x = MathUtils.lerp(cam.position.x, posX, 0.1f);
+//        if (Math.abs(cam.position.x - posX) < 0.1f) {
+//            cam.position.x = posX;
+//        }
 
         //
 //        if ((cam.position.x - (SuperMarioBros.V_WIDTH /2) <= 0)){
@@ -211,6 +231,11 @@ public class PlayScreen implements Screen {
 
         smbGame.batch.setProjectionMatrix(cam.combined);
         smbGame.batch.begin();
+        // draw map tile objects
+        for (InteractiveTileObject mapTileObject : mapTilesObjects) {
+            mapTileObject.draw(smbGame.batch);
+        }
+        // draw mario
         player.draw(smbGame.batch);
         for (Enemy enemy : creator.getEnemies())
             enemy.draw(smbGame.batch);
@@ -220,21 +245,22 @@ public class PlayScreen implements Screen {
 
         //Set our batch to now draw what the Hud camera sees.
         smbGame.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        // render hud
         hud.stage.draw();
 
-        if(gameOver()){
-            smbGame.setScreen(new GameOverScreen(smbGame));
-            dispose();
-        }
+//        if(gameOver()){
+//            smbGame.setScreen(new GameOverScreen(smbGame));
+//            dispose();
+//        }
 
     }
 
-    public boolean gameOver(){
-        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3){
-            return true;
-        }
-        return false;
-    }
+//    public boolean gameOver(){
+//        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3){
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Override
     public void resize(int width, int height) {

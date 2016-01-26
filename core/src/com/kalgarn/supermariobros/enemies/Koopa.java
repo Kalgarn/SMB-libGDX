@@ -121,18 +121,18 @@ public class Koopa extends Enemy{
 
     @Override
     public void hitOnHead(Mario mario) {
-        if(currentState == State.STANDING_SHELL) {
-            if(mario.b2body.getPosition().x > b2body.getPosition().x)
-                velocity.x = -2;
-            else
-                velocity.x = 2;
-            currentState = State.MOVING_SHELL;
-            System.out.println("Set to moving shell");
-        }
-        else {
-            currentState = State.STANDING_SHELL;
-            velocity.x = 0;
-        }
+//        if(currentState == State.STANDING_SHELL) {
+//            if(mario.b2body.getPosition().x > b2body.getPosition().x)
+//                velocity.x = -2;
+//            else
+//                velocity.x = 2;
+//            currentState = State.MOVING_SHELL;
+//            System.out.println("Set to moving shell");
+//        }
+//        else {
+//            currentState = State.STANDING_SHELL;
+//            velocity.x = 0;
+//        }
     }
 
     @Override

@@ -32,11 +32,11 @@ public class WorldContactListener implements ContactListener {
         switch (cDef){
             case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.BRICK_BIT:
             case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.COIN_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.MARIO_HEAD_BIT)
-                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
-                else
-                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
-                break;
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.MARIO_HEAD_BIT)
+//                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
+//                else
+//                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
+//                break;
             case SuperMarioBros.ENEMY_HEAD_BIT | SuperMarioBros.MARIO_BIT:
                 if(fixA.getFilterData().categoryBits == SuperMarioBros.ENEMY_HEAD_BIT)
                     ((Enemy)fixA.getUserData()).hitOnHead((Mario) fixB.getUserData());
