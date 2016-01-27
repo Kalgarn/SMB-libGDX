@@ -121,9 +121,11 @@ public class Mario extends RigidBody {
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
                 jump();
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && b2body.getLinearVelocity().x <= 2)
-                b2body.applyLinearImpulse(new Vector2(0.5f, 0), b2body.getWorldCenter(), true);
+               // b2body.applyLinearImpulse(new Vector2(10f, 0), b2body.getWorldCenter(), true);
+            b2body.applyForceToCenter(new Vector2(85f, 0), true);
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= -2)
-                b2body.applyLinearImpulse(new Vector2(-0.5f, 0), b2body.getWorldCenter(), true);
+               // b2body.applyLinearImpulse(new Vector2(-10f, 0), b2body.getWorldCenter(), true);
+                b2body.applyForceToCenter(new Vector2(-45f, 0),true);
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
                fire();
 
@@ -161,6 +163,18 @@ handleInput();
             currentState = State.DEAD;
             die();
         }
+
+        // limit Mario's moving area
+        if (b2body.getPosition().x < 0.5f) {
+            b2body.setTransform(0.5f, b2body.getPosition().y, 0);
+            b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+        }
+        else if (b2body.getPosition().x > playScreen.getMapWidth() - 0.5f) {
+            b2body.setTransform(playScreen.getMapWidth() - 0.5f, b2body.getPosition().y, 0);
+            b2body.setLinearVelocity(0, b2body.getLinearVelocity().y);
+        }
+
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - radius);
 
     }
 
@@ -279,7 +293,7 @@ handleInput();
 
     public void jump() {
         if (currentState != State.JUMPING) {
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, 20f), b2body.getWorldCenter(), true);
             SuperMarioBros.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
             currentState = State.JUMPING;
         }
@@ -341,13 +355,13 @@ handleInput();
         world.destroyBody(b2body);
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set(currentPosition.add(0, 10 / SuperMarioBros.PPM));
+        bdef.position.set(currentPosition.add(0, radius));
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / SuperMarioBros.PPM);
+        shape.setRadius(radius);
         fdef.filter.categoryBits = SuperMarioBros.MARIO_BIT;
         fdef.filter.maskBits = SuperMarioBros.GROUND_BIT |
                 SuperMarioBros.COIN_BIT |
@@ -381,7 +395,7 @@ handleInput();
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / SuperMarioBros.PPM);
+        shape.setRadius(radius);
         fdef.filter.categoryBits = SuperMarioBros.MARIO_BIT;
         fdef.filter.maskBits = SuperMarioBros.GROUND_BIT |
                 SuperMarioBros.COIN_BIT |
@@ -420,5 +434,9 @@ handleInput();
         super.draw(batch);
         for (FireBall ball : fireballs)
             ball.draw(batch);
+    }
+
+    public Vector2 getBodyPosition() {
+        return b2body.getPosition();
     }
 }

@@ -56,6 +56,9 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
+    public float timeScale = 1;
+    private float accumulator;
+
     //sprites
     private Mario player;
 
@@ -138,7 +141,7 @@ public class PlayScreen implements Screen {
 
     }
 
-    public void handleInput(float dt){
+    public void handleInput(){
         //control our player using immediate impulses
 //        if(player.currentState != Mario.State.DEAD) {
 //            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
@@ -161,18 +164,20 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         //handle user input first
-        handleInput(dt);
+        handleInput();
         handleSpawningItems();
 
         //takes 1 step in the physics simulation(60 times per second)
-        world.step(1 / 60f, 6, 2);
+        world.step(1 / 60f, 8, 3);
+        // Box2D world step
+
         //update ennemy
         player.update(dt);
         for(Enemy enemy : creator.getEnemies()) {
             enemy.update(dt);
-//            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
-//                enemy.b2body.setActive(true);
-//            }
+            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
+                enemy.b2body.setActive(true);
+            }
         }
         // update item
         for(Item item : items)
@@ -183,28 +188,28 @@ public class PlayScreen implements Screen {
             mapTileObject.update(dt);
         }
 
-//        // update enemies
-//        for (Enemy enemy : enemies) {
-//            enemy.update(delta);
-//        }
+        // update enemies
+        for (Enemy enemy : enemies) {
+            enemy.update(dt);
+        }
 
         hud.update(dt);
 
         //attach our gamecam to our players.x coordinate
-//        float posX = cam.position.x;
-//        if(player.currentState != Mario.State.DEAD) {
-//            cam.position.x = player.b2body.getPosition().x;
-//          posX = MathUtils.clamp(player.b2body.getPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, (mapWidth - SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
+        float posX = cam.position.x;
+        if(player.currentState != Mario.State.DEAD) {
+        //    cam.position.x = player.getBodyPosition().x;
+          posX = MathUtils.clamp(player.getBodyPosition().x, (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM, mapWidth - (SuperMarioBros.VIEWPORT_WIDTH / 2) / SuperMarioBros.PPM);
 //
-//        }
-//        cam.position.x = MathUtils.lerp(cam.position.x, posX, 0.1f);
-//        if (Math.abs(cam.position.x - posX) < 0.1f) {
-//            cam.position.x = posX;
-//        }
+        }
+        cam.position.x = MathUtils.lerp(cam.position.x, posX, 0.1f);
+        if (Math.abs(cam.position.x - posX) < 0.1f) {
+            cam.position.x = posX;
+        }
 
-        //
-//        if ((cam.position.x - (SuperMarioBros.V_WIDTH /2) <= 0)){
-//            cam.position.x = (SuperMarioBros.V_WIDTH /2) / SuperMarioBros.PPM;
+
+   //     if ((cam.position.x - (SuperMarioBros.V_WIDTH /2) <= 0)){
+ //           cam.position.x = (SuperMarioBros.V_WIDTH /2) / SuperMarioBros.PPM;
 //        }
         //update our gamecam with correct coordinates after changes
         cam.update();
@@ -248,19 +253,20 @@ public class PlayScreen implements Screen {
         // render hud
         hud.stage.draw();
 
-//        if(gameOver()){
-//            smbGame.setScreen(new GameOverScreen(smbGame));
-//            dispose();
-//        }
+        if(gameOver()){
+            smbGame.setScreen(new GameOverScreen(smbGame));
+            dispose();
+        }
 
     }
 
-//    public boolean gameOver(){
-//        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3){
-//            return true;
-//        }
-//        return false;
-//    }
+
+    public boolean gameOver(){
+        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void resize(int width, int height) {

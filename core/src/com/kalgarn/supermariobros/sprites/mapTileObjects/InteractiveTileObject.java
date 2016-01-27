@@ -23,13 +23,13 @@ import com.kalgarn.supermariobros.sprites.RigidBody;
  */
 public abstract class InteractiveTileObject extends RigidBody{
     //protected World world;
-   // protected TiledMap map;
+    protected TiledMap map;
     //protected Rectangle bounds;
     ///protected Body body;
     //protected PlayScreen screen;
     //protected MapObject object;
 
-  //  protected Fixture fixture;
+    protected Fixture fixture;
 
     protected TiledMapTileMapObject mapObject;
 
@@ -64,17 +64,17 @@ public abstract class InteractiveTileObject extends RigidBody{
     }
 
 //    public abstract void onHeadHit(Mario mario);
-//    public void setCategoryFilter(short filterBit){
-//        Filter filter = new Filter();
-//        filter.categoryBits = filterBit;
+    public void setCategoryFilter(short filterBit){
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
 //        fixture.setFilterData(filter);
-//    }
+    }
 //
-//    public TiledMapTileLayer.Cell getCell(){
-//        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-//        return layer.getCell((int)(body.getPosition().x * SuperMarioBros.PPM / 16),
-//                (int)(body.getPosition().y * SuperMarioBros.PPM / 16));
-//    }
+    public TiledMapTileLayer.Cell getCell(){
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        return layer.getCell((int)(b2body.getPosition().x * SuperMarioBros.PPM / 16),
+                (int)(b2body.getPosition().y * SuperMarioBros.PPM / 16));
+    }
 @Override
 public void update(float delta) {
 

@@ -19,8 +19,8 @@ public class SuperMarioBros extends Game {
 	public static final int WINDOW_WIDTH = 400;
 	public static final int WINDOW_HEIGHT = 208;
 
-	public static final float VIEWPORT_WIDTH = 400f;
-	public static final float VIEWPORT_HEIGHT = 208f;
+	public static final float VIEWPORT_WIDTH = 400;
+	public static final float VIEWPORT_HEIGHT = 208;
 	// pixel per meter
 	public static final float PPM = 16;
 
