@@ -10,7 +10,9 @@ import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.enemies.Enemy;
 import com.kalgarn.supermariobros.items.Item;
 import com.kalgarn.supermariobros.others.FireBall;
+import com.kalgarn.supermariobros.sprites.Collider;
 import com.kalgarn.supermariobros.sprites.Mario;
+import com.kalgarn.supermariobros.sprites.RigidBody;
 import com.kalgarn.supermariobros.sprites.mapTileObjects.InteractiveTileObject;
 
 /**
@@ -25,59 +27,68 @@ public class WorldContactListener implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         //if (fixA.getUserData() =="head" || fixB.getUserData() =="head")
+        
+        if (fixA.isSensor() || fixB.isSensor()) {
+            ((RigidBody) fixA.getUserData()).trigger(new Collider(fixB));
+            ((RigidBody) fixB.getUserData()).trigger(new Collider(fixA));
+        }
+        else {
+            ((RigidBody) fixA.getUserData()).collide(new Collider(fixB));
+            ((RigidBody) fixB.getUserData()).collide(new Collider(fixA));
+        }
 
 
-        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
-
-        switch (cDef){
-            case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.BRICK_BIT:
-            case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.COIN_BIT:
+//        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+//
+//        switch (cDef){
+//            case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.BRICK_BIT:
+//            case SuperMarioBros.MARIO_HEAD_BIT | SuperMarioBros.COIN_BIT:
 //                if(fixA.getFilterData().categoryBits == SuperMarioBros.MARIO_HEAD_BIT)
 //                    ((InteractiveTileObject) fixB.getUserData()).onHeadHit((Mario) fixA.getUserData());
 //                else
 //                    ((InteractiveTileObject) fixA.getUserData()).onHeadHit((Mario) fixB.getUserData());
 //                break;
-            case SuperMarioBros.ENEMY_HEAD_BIT | SuperMarioBros.MARIO_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.ENEMY_HEAD_BIT)
-                    ((Enemy)fixA.getUserData()).hitOnHead((Mario) fixB.getUserData());
-                else
-                    ((Enemy)fixB.getUserData()).hitOnHead((Mario) fixA.getUserData());
-                break;
-            case SuperMarioBros.ENEMY_BIT | SuperMarioBros.OBJECT_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.ENEMY_BIT)
-                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
-                else
-                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
-                break;
-            case SuperMarioBros.MARIO_BIT | SuperMarioBros.ENEMY_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.MARIO_BIT)
-                    ((Mario) fixA.getUserData()).hit((Enemy)fixB.getUserData());
-                else
-                    ((Mario) fixB.getUserData()).hit((Enemy)fixA.getUserData());
-                break;
-            case SuperMarioBros.ENEMY_BIT:
-                ((Enemy)fixA.getUserData()).hitByEnemy((Enemy)fixB.getUserData());
-                ((Enemy)fixB.getUserData()).hitByEnemy((Enemy)fixA.getUserData());
-                break;
-            case SuperMarioBros.ITEM_BIT | SuperMarioBros.OBJECT_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.ITEM_BIT)
-                    ((Item)fixA.getUserData()).reverseVelocity(true, false);
-                else
-                    ((Item)fixB.getUserData()).reverseVelocity(true, false);
-                break;
-            case SuperMarioBros.ITEM_BIT | SuperMarioBros.MARIO_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.ITEM_BIT)
-                    ((Item)fixA.getUserData()).use((Mario) fixB.getUserData());
-                else
-                    ((Item)fixB.getUserData()).use((Mario) fixA.getUserData());
-                break;
-            case SuperMarioBros.FIREBALL_BIT | SuperMarioBros.OBJECT_BIT:
-                if(fixA.getFilterData().categoryBits == SuperMarioBros.FIREBALL_BIT)
-                    ((FireBall)fixA.getUserData()).setToDestroy();
-                else
-                    ((FireBall)fixB.getUserData()).setToDestroy();
-                break;
-        }
+//            case SuperMarioBros.ENEMY_HEAD_BIT | SuperMarioBros.MARIO_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.ENEMY_HEAD_BIT)
+//                    ((Enemy)fixA.getUserData()).hitOnHead((Mario) fixB.getUserData());
+//                else
+//                    ((Enemy)fixB.getUserData()).hitOnHead((Mario) fixA.getUserData());
+//                break;
+//            case SuperMarioBros.ENEMY_BIT | SuperMarioBros.OBJECT_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.ENEMY_BIT)
+//                    ((Enemy)fixA.getUserData()).reverseVelocity(true, false);
+//                else
+//                    ((Enemy)fixB.getUserData()).reverseVelocity(true, false);
+//                break;
+//            case SuperMarioBros.MARIO_BIT | SuperMarioBros.ENEMY_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.MARIO_BIT)
+//                    ((Mario) fixA.getUserData()).hit((Enemy)fixB.getUserData());
+//                else
+//                    ((Mario) fixB.getUserData()).hit((Enemy)fixA.getUserData());
+//                break;
+//            case SuperMarioBros.ENEMY_BIT:
+//                ((Enemy)fixA.getUserData()).hitByEnemy((Enemy)fixB.getUserData());
+//                ((Enemy)fixB.getUserData()).hitByEnemy((Enemy)fixA.getUserData());
+//                break;
+//            case SuperMarioBros.ITEM_BIT | SuperMarioBros.OBJECT_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.ITEM_BIT)
+//                    ((Item)fixA.getUserData()).reverseVelocity(true, false);
+//                else
+//                    ((Item)fixB.getUserData()).reverseVelocity(true, false);
+//                break;
+//            case SuperMarioBros.ITEM_BIT | SuperMarioBros.MARIO_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.ITEM_BIT)
+//                    ((Item)fixA.getUserData()).use((Mario) fixB.getUserData());
+//                else
+//                    ((Item)fixB.getUserData()).use((Mario) fixA.getUserData());
+//                break;
+//            case SuperMarioBros.FIREBALL_BIT | SuperMarioBros.OBJECT_BIT:
+//                if(fixA.getFilterData().categoryBits == SuperMarioBros.FIREBALL_BIT)
+//                    ((FireBall)fixA.getUserData()).setToDestroy();
+//                else
+//                    ((FireBall)fixB.getUserData()).setToDestroy();
+//                break;
+//        }
     }
 
     @Override

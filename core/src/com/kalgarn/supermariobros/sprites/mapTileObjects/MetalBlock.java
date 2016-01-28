@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.screens.PlayScreen;
+import com.kalgarn.supermariobros.sprites.Mario;
 
 /**
  * Created by Jerome on 26/01/2016.
@@ -13,6 +14,11 @@ import com.kalgarn.supermariobros.screens.PlayScreen;
 public class MetalBlock extends InteractiveTileObject {
     public MetalBlock(PlayScreen playScreen, float x, float y, TiledMapTileMapObject mapObject) {
         super(playScreen, x, y, mapObject);
+    }
+
+    @Override
+    public void onHeadHit(Mario mario) {
+
     }
 
     @Override

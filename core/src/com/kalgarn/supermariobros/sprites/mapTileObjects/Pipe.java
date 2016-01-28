@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.screens.PlayScreen;
+import com.kalgarn.supermariobros.sprites.Mario;
 
 /**
  * Created by Jerome on 26/01/2016.
@@ -38,6 +39,11 @@ public class Pipe extends InteractiveTileObject{
 
     @Override
     public void update(float delta) {
+
+    }
+
+    @Override
+    public void onHeadHit(Mario mario) {
 
     }
 }

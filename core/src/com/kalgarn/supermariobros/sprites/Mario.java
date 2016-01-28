@@ -393,6 +393,7 @@ handleInput();
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
+        // body
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(radius);
@@ -410,7 +411,7 @@ handleInput();
 
         EdgeShape head = new EdgeShape(); // sensor on mario's head
        // head.set(new Vector2(-2 / SuperMarioBros.PPM, 9 / SuperMarioBros.PPM), new Vector2(2 / SuperMarioBros.PPM, 9 / SuperMarioBros.PPM));
-        head.set(new Vector2(-2 / SuperMarioBros.PPM, 6 / SuperMarioBros.PPM), new Vector2(2 / SuperMarioBros.PPM, 6 / SuperMarioBros.PPM));
+        head.set(new Vector2(-radius/ 6, radius), new Vector2(radius/ 6,radius));
         fdef.filter.categoryBits = SuperMarioBros.MARIO_HEAD_BIT;
         fdef.shape = head;
         fdef.isSensor = true;
@@ -420,9 +421,14 @@ handleInput();
 
         // senssor Mario's feet
         EdgeShape feet = new EdgeShape();
-        feet.set(new Vector2(-2 / SuperMarioBros.PPM, SuperMarioBros.PPM), new Vector2(2 / SuperMarioBros.PPM, SuperMarioBros.PPM));
+        feet.set(new Vector2(-radius, -radius), new Vector2(radius, -radius));
         fdef.shape = feet;
+        fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData(this);
+
+        shape.dispose();
+        head.dispose();
+        feet.dispose();
     }
 
     public void fire() {
@@ -435,6 +441,8 @@ handleInput();
         for (FireBall ball : fireballs)
             ball.draw(batch);
     }
+
+
 
     public Vector2 getBodyPosition() {
         return b2body.getPosition();

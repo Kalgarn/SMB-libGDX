@@ -30,6 +30,13 @@ public abstract class RigidBody extends Sprite {
     protected abstract void defineBody();
     public abstract void update(float dt);
 
+    public void collide(Collider object){
+
+    }
+    public void trigger(Collider object){
+
+    }
+
     public void queueDestroy() {
         toBeDestroyed = true;
     }

@@ -19,20 +19,20 @@ public class Brick extends InteractiveTileObject {
     public Brick(PlayScreen screen,float x, float y, TiledMapTileMapObject mapObject){
         super(screen, x, y, mapObject);
 //        fixture.setUserData(this);
-//        setCategoryFilter(SuperMarioBros.BRICK_BIT);
+        setCategoryFilter(SuperMarioBros.BRICK_BIT);
     }
 
-//    @Override
-//    public void onHeadHit(Mario mario) {
-//        Gdx.app.log("brick","collision");
-//        if(mario.isBig()) {
-//            setCategoryFilter(SuperMarioBros.DESTROYED_BIT);
-//            getCell().setTile(null);
-//            Hud.addScore(200);
-//            SuperMarioBros.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
-//        }
-//        SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-//    }
+
+    public void onHeadHit(Mario mario) {
+        Gdx.app.log("brick","collision");
+        if(mario.isBig()) {
+            setCategoryFilter(SuperMarioBros.DESTROYED_BIT);
+            getCell().setTile(null);
+            Hud.addScore(200);
+            SuperMarioBros.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+        }
+        SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
+    }
 
     @Override
     protected void defineBody() {
@@ -56,6 +56,15 @@ public class Brick extends InteractiveTileObject {
 
     @Override
     public void update(float delta) {
+        if (destroyed) {
+            return;
+        }
 
+        if (toBeDestroyed) {
+            setBounds(0, 0, 0, 0);
+            world.destroyBody(b2body);
+            destroyed = true;
+            return;
+        }
     }
 }

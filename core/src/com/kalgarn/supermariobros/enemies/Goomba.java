@@ -33,7 +33,7 @@ public class Goomba extends Enemy {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("goomba"), i * 16, 0, 16, 16));
         walkAnimation = new Animation(0.4f, frames);
         stateTime = 0;
-        setBounds(getX(), getY(), 16 / SuperMarioBros.PPM, 16 / SuperMarioBros.PPM);
+        setBounds(getX() - 8 / SuperMarioBros.PPM, getY() - 8 / SuperMarioBros.PPM, 16 / SuperMarioBros.PPM, 16 / SuperMarioBros.PPM);
         setToDestroy = false;
         destroyed = false;
         angle = 0;
@@ -44,7 +44,7 @@ public class Goomba extends Enemy {
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
             destroyed = true;
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
+            setRegion(new TextureRegion(playScreen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
             stateTime = 0;
         }
         else if(!destroyed) {
@@ -52,10 +52,15 @@ public class Goomba extends Enemy {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
+        //  goomba walk
+        if (playScreen.getPlayerPosition().x + SuperMarioBros.VIEWPORT_WIDTH /2 > b2body.getPosition().x){
+            b2body.setActive(true);
+        }
+        
     }
 
     @Override
-    protected void defineEnemy() {
+    protected void defineBody() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -78,16 +83,20 @@ public class Goomba extends Enemy {
         //Create the Head here:
         PolygonShape head = new PolygonShape();
         Vector2[] vertice = new Vector2[4]; // vertex is singular form
-        vertice[0] = new Vector2(-5f, 7f).scl(1 / SuperMarioBros.PPM);
-        vertice[1] = new Vector2(5f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertice[0] = new Vector2(-7f, 7f).scl(1 / SuperMarioBros.PPM);
+        vertice[1] = new Vector2(7f, 7f).scl(1 / SuperMarioBros.PPM);
         vertice[2] = new Vector2(-2f, -2f).scl(1 / SuperMarioBros.PPM);
-        vertice[3] = new Vector2(2f, 2f).scl(1 / SuperMarioBros.PPM);
+        vertice[3] = new Vector2(2f, -2f).scl(1 / SuperMarioBros.PPM);
         head.set(vertice);
 
         fdef.shape = head;
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits = SuperMarioBros.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
+
+        shape.dispose();
+        head.dispose();
+
 
     }
 

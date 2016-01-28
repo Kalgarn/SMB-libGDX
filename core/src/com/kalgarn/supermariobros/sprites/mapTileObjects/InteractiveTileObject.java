@@ -26,7 +26,7 @@ public abstract class InteractiveTileObject extends RigidBody{
     protected TiledMap map;
     //protected Rectangle bounds;
     ///protected Body body;
-    //protected PlayScreen screen;
+    protected PlayScreen screen;
     //protected MapObject object;
 
     protected Fixture fixture;
@@ -63,7 +63,7 @@ public abstract class InteractiveTileObject extends RigidBody{
 
     }
 
-//    public abstract void onHeadHit(Mario mario);
+    public abstract void onHeadHit(Mario mario);
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();
         filter.categoryBits = filterBit;

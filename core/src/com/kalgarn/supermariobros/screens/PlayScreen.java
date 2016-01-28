@@ -175,9 +175,9 @@ public class PlayScreen implements Screen {
         player.update(dt);
         for(Enemy enemy : creator.getEnemies()) {
             enemy.update(dt);
-            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
-                enemy.b2body.setActive(true);
-            }
+//            if(enemy.getX() < player.getX() + 224 / SuperMarioBros.PPM) {
+//                enemy.b2body.setActive(true);
+//            }
         }
         // update item
         for(Item item : items)
@@ -279,6 +279,10 @@ public class PlayScreen implements Screen {
     }
     public World getWorld(){
         return world;
+    }
+
+    public Vector2 getPlayerPosition(){
+        return player.getBodyPosition();
     }
 
     @Override

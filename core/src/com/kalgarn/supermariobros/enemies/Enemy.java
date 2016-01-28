@@ -6,26 +6,29 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.kalgarn.supermariobros.screens.PlayScreen;
 import com.kalgarn.supermariobros.sprites.Mario;
+import com.kalgarn.supermariobros.sprites.RigidBody;
 
 /**
  * Created by Jerome on 14/01/2016.
  */
-public abstract class Enemy extends Sprite{
-    protected World world;
-    protected PlayScreen screen;
-    public Body b2body;
+public abstract class Enemy extends RigidBody{
+   // protected World world;
+ //   protected PlayScreen screen;
+  //  public Body b2body;
     public Vector2 velocity;
 
     public Enemy(PlayScreen screen, float x, float y){
+        super(screen, x, y);
         this.world = screen.getWorld();
-        this.screen = screen;
+   //     this.screen = screen;
         setPosition(x, y);
-        defineEnemy();
+   //     defineEnemy();
+        defineBody();
         velocity = new Vector2(-1, -2);
         b2body.setActive(false);
     }
 
-    protected abstract void defineEnemy();
+ //   protected abstract void defineEnemy();
     public abstract void update(float dt);
     public abstract void hitOnHead(Mario mario);
     public abstract void hitByEnemy(Enemy enemy);

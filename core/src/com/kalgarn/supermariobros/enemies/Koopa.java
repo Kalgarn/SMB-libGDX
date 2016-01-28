@@ -44,7 +44,7 @@ public class Koopa extends Enemy{
     }
 
     @Override
-    protected void defineEnemy() {
+    protected void defineBody() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
