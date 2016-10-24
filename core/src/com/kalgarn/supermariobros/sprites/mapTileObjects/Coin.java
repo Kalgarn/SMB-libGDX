@@ -14,6 +14,7 @@ import com.kalgarn.supermariobros.items.ItemDef;
 import com.kalgarn.supermariobros.items.Mushroom;
 import com.kalgarn.supermariobros.scenes.Hud;
 import com.kalgarn.supermariobros.screens.PlayScreen;
+import com.kalgarn.supermariobros.sprites.Collider;
 import com.kalgarn.supermariobros.sprites.Mario;
 
 /**
@@ -45,6 +46,21 @@ public class Coin extends InteractiveTileObject{
                 SuperMarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
             getCell().setTile(tileSet.getTile(BLANK_COIN));
             Hud.addScore(100);
+        }
+    }
+
+    public void trigger(Collider other){
+        Gdx.app.log("coin","collision");
+        if (other.getFilter().categoryBits == SuperMarioBros.MARIO_HEAD_BIT) {
+            if (mapObject.getProperties().containsKey("mushroom")) {
+               // screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16 / SuperMarioBros.PPM),                        Mushroom.class));
+                SuperMarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
+
+            } else {
+                SuperMarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+                // getCell().setTile(tileSet.getTile(BLANK_COIN));
+                Hud.addScore(100);
+            }
         }
     }
 

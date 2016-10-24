@@ -32,6 +32,8 @@ import com.kalgarn.supermariobros.screens.PlayScreen;
 public class Mario extends RigidBody {
 
 
+
+
     public enum State {FALLING, JUMPING, STANDING, RUNNING, GROWING, DEAD};
     public State currentState;
     public State previousState;
@@ -442,6 +444,9 @@ handleInput();
             ball.draw(batch);
     }
 
+    public boolean marioIsBig() {
+        return marioIsBig;
+    }
 
 
     public Vector2 getBodyPosition() {

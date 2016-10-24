@@ -22,7 +22,7 @@ public class WorldContactListener implements ContactListener {
     @Override
     // use when 2 fixtures begin to connection/collide
     public void beginContact(Contact contact) {
-        Gdx.app.log("begin contact","");
+      //  Gdx.app.log("begin contact","");
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
@@ -93,7 +93,7 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.log("end contact","");
+        //Gdx.app.log("end contact","");
     }
 
     @Override

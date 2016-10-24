@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.kalgarn.supermariobros.SuperMarioBros;
 import com.kalgarn.supermariobros.scenes.Hud;
 import com.kalgarn.supermariobros.screens.PlayScreen;
+import com.kalgarn.supermariobros.sprites.Collider;
 import com.kalgarn.supermariobros.sprites.Mario;
 
 /**
@@ -33,6 +34,20 @@ public class Brick extends InteractiveTileObject {
         }
         SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
     }
+
+
+    public void trigger(Collider other) {
+        Gdx.app.log("brick","collision");
+        if (other.getFilter().categoryBits == SuperMarioBros.MARIO_HEAD_BIT) {
+
+                if (((Mario) other.getUserData()).marioIsBig()) {
+                        setCategoryFilter(SuperMarioBros.DESTROYED_BIT);
+                        getCell().setTile(null);
+                        Hud.addScore(200);
+                        SuperMarioBros.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+                    }
+                    SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
+        }}
 
     @Override
     protected void defineBody() {
@@ -67,4 +82,6 @@ public class Brick extends InteractiveTileObject {
             return;
         }
     }
+
+
 }
