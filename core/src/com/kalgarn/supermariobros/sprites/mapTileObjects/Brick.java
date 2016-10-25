@@ -23,17 +23,17 @@ public class Brick extends InteractiveTileObject {
         setCategoryFilter(SuperMarioBros.BRICK_BIT);
     }
 
-
-    public void onHeadHit(Mario mario) {
-        Gdx.app.log("brick","collision");
-        if(mario.isBig()) {
-            setCategoryFilter(SuperMarioBros.DESTROYED_BIT);
-            getCell().setTile(null);
-            Hud.addScore(200);
-            SuperMarioBros.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
-        }
-        SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-    }
+//
+//    public void onHeadHit(Mario mario) {
+//        Gdx.app.log("brick","collision");
+//        if(mario.isBig()) {
+//            setCategoryFilter(SuperMarioBros.DESTROYED_BIT);
+//            getCell().setTile(null);
+//            Hud.addScore(200);
+//            SuperMarioBros.manager.get("audio/sounds/breakblock.wav", Sound.class).play();
+//        }
+//        SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
+//    }
 
 
     public void trigger(Collider other) {

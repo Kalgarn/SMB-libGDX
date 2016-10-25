@@ -31,23 +31,23 @@ public class Coin extends InteractiveTileObject{
         setCategoryFilter(SuperMarioBros.COIN_BIT);
     }
 
-    @Override
-    public void onHeadHit(Mario mario) {
-        Gdx.app.log("coin","collision");
-        if(getCell().getTile().getId() == BLANK_COIN)
-            SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-        else {
-            if(mapObject.getProperties().containsKey("mushroom")) {
-                screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16 / SuperMarioBros.PPM),
-                        Mushroom.class));
-                SuperMarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
-            }
-            else
-                SuperMarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
-            getCell().setTile(tileSet.getTile(BLANK_COIN));
-            Hud.addScore(100);
-        }
-    }
+//    @Override
+//    public void onHeadHit(Mario mario) {
+//        Gdx.app.log("coin","collision");
+//        if(getCell().getTile().getId() == BLANK_COIN)
+//            SuperMarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
+//        else {
+//            if(mapObject.getProperties().containsKey("mushroom")) {
+//                screen.spawnItem(new ItemDef(new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16 / SuperMarioBros.PPM),
+//                        Mushroom.class));
+//                SuperMarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
+//            }
+//            else
+//                SuperMarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+//            getCell().setTile(tileSet.getTile(BLANK_COIN));
+//            Hud.addScore(100);
+//        }
+//    }
 
     public void trigger(Collider other){
         Gdx.app.log("coin","collision");

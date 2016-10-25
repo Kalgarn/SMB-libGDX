@@ -44,8 +44,8 @@ public class Rock extends InteractiveTileObject {
 
     }
 
-    @Override
-    public void onHeadHit(Mario mario) {
-
-    }
+//    @Override
+//    public void onHeadHit(Mario mario) {
+//
+//    }
 }

@@ -42,8 +42,8 @@ public class Pipe extends InteractiveTileObject{
 
     }
 
-    @Override
-    public void onHeadHit(Mario mario) {
-
-    }
+//    @Override
+//    public void onHeadHit(Mario mario) {
+//
+//    }
 }

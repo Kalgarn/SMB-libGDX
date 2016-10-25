@@ -16,10 +16,10 @@ public class MetalBlock extends InteractiveTileObject {
         super(playScreen, x, y, mapObject);
     }
 
-    @Override
-    public void onHeadHit(Mario mario) {
-
-    }
+//    @Override
+//    public void onHeadHit(Mario mario) {
+//
+//    }
 
     @Override
     protected void defineBody() {
